@@ -1,0 +1,1661 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>HRMS - Modern Portal</title>
+  
+  <!-- Bootstrap 5 CSS -->
+  <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/css/bootstrap.min.css" rel="stylesheet" />
+  <!-- Bootstrap Icons -->
+  <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.11.3/font/bootstrap-icons.min.css" />
+
+  <style>
+    :root {
+      --primary-orange: #ff5e3a;
+      --primary-orange-light: #fff0eb;
+      --bg-canvas: #f8fafc;
+      --card-bg: #ffffff;
+      --text-muted-color: #9aa0a6;
+      --border-color: #edf0f5;
+      --editor-orange: #ff5e3a;
+    }
+
+    body {
+      background-color: var(--bg-canvas);
+      font-family: system-ui, -apple-system, "Segoe UI", Roboto, "Helvetica Neue", sans-serif;
+      margin: 0;
+      padding: 0;
+      height: 100vh;
+      overflow: hidden;
+      font-size: 0.82rem;
+    }
+
+    /* =========================================================
+       MODERN CLEAN LOGIN STYLE
+       ========================================================= */
+    #authView {
+      min-height: 100vh;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      background: radial-gradient(circle at 50% 10%, #ffffff 0%, #edf2f7 100%);
+      padding: 1.5rem;
+      position: relative;
+    }
+
+    #authView::before {
+      content: '';
+      position: absolute;
+      width: 320px;
+      height: 320px;
+      background: radial-gradient(circle, rgba(255, 94, 58, 0.12) 0%, transparent 70%);
+      top: 15%;
+      left: 50%;
+      transform: translateX(-50%);
+      pointer-events: none;
+    }
+
+    .clean-login-card {
+      background: #ffffff;
+      border: 1px solid rgba(226, 232, 240, 0.8);
+      border-radius: 20px;
+      padding: 2.5rem 2.25rem;
+      width: 100%;
+      max-width: 410px;
+      box-shadow: 0 20px 40px -15px rgba(0, 0, 0, 0.07), 0 0 1px 1px rgba(0, 0, 0, 0.02);
+      position: relative;
+      z-index: 1;
+    }
+
+    .login-logo-container {
+      width: 48px;
+      height: 48px;
+      background: #ffffff;
+      border: 1px solid #edf2f7;
+      border-radius: 12px;
+      display: inline-flex;
+      align-items: center;
+      justify-content: center;
+      box-shadow: 0 4px 12px rgba(0, 0, 0, 0.04);
+      margin-bottom: 1rem;
+    }
+
+    .login-logo-container img {
+      width: 30px;
+      height: 30px;
+      object-fit: contain;
+    }
+
+    .field-wrapper {
+      margin-bottom: 1rem;
+    }
+
+    .field-label {
+      font-size: 0.72rem;
+      font-weight: 600;
+      color: #475569;
+      margin-bottom: 0.35rem;
+      display: block;
+    }
+
+    .field-input-box {
+      display: flex;
+      align-items: center;
+      background: #f8fafc;
+      border: 1px solid #e2e8f0;
+      border-radius: 10px;
+      padding: 0.5rem 0.75rem;
+      transition: all 0.2s ease;
+    }
+
+    .field-input-box:focus-within {
+      background: #ffffff;
+      border-color: var(--primary-orange);
+      box-shadow: 0 0 0 3px rgba(255, 94, 58, 0.12);
+    }
+
+    .field-input-box i {
+      color: #94a3b8;
+      font-size: 0.85rem;
+      margin-right: 0.5rem;
+    }
+
+    .field-input-box input {
+      border: none;
+      background: transparent;
+      outline: none;
+      width: 100%;
+      font-size: 0.8rem;
+      color: #1e293b;
+    }
+
+    .field-input-box input::placeholder {
+      color: #cbd5e1;
+    }
+
+    .toggle-pass-btn {
+      background: none;
+      border: none;
+      color: #94a3b8;
+      padding: 0;
+      cursor: pointer;
+      font-size: 0.85rem;
+      display: flex;
+      align-items: center;
+    }
+
+    .toggle-pass-btn:hover {
+      color: #475569;
+    }
+
+    .btn-login-submit {
+      background: var(--primary-orange);
+      color: #ffffff;
+      border: none;
+      border-radius: 10px;
+      padding: 0.65rem;
+      font-weight: 600;
+      font-size: 0.82rem;
+      width: 100%;
+      transition: all 0.2s ease;
+      box-shadow: 0 4px 12px rgba(255, 94, 58, 0.25);
+    }
+
+    .btn-login-submit:hover {
+      background: #e64a27;
+      color: #ffffff;
+      box-shadow: 0 6px 16px rgba(255, 94, 58, 0.35);
+    }
+
+    .quick-account-pill {
+      background: #f1f5f9;
+      border: 1px solid #e2e8f0;
+      border-radius: 8px;
+      padding: 0.35rem 0.6rem;
+      font-size: 0.7rem;
+      color: #475569;
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      cursor: pointer;
+      transition: background 0.15s ease;
+    }
+
+    .quick-account-pill:hover {
+      background: #e2e8f0;
+    }
+
+    .brand-logo-img {
+      width: 32px;
+      height: 32px;
+      object-fit: contain;
+      border-radius: 8px;
+    }
+
+    /* =========================================================
+       MAIN APP STYLES
+       ========================================================= */
+    #appView {
+      display: none;
+      height: 100vh;
+      overflow: hidden;
+    }
+
+    .sidebar-desktop {
+      background: #ffffff;
+      border-right: 1px solid var(--border-color);
+      height: 100vh;
+      display: flex;
+      flex-direction: column;
+      justify-content: space-between;
+      padding: 1rem 0.9rem;
+      z-index: 1030;
+    }
+
+    .nav-section-title {
+      font-size: 0.65rem;
+      font-weight: 700;
+      text-transform: uppercase;
+      color: var(--text-muted-color);
+      letter-spacing: 0.5px;
+      margin-bottom: 0.4rem;
+    }
+
+    .store-select {
+      background-color: #ffffff;
+      border: 1px solid var(--border-color);
+      border-radius: 9px;
+      padding: 0.35rem 0.6rem;
+      font-size: 0.78rem;
+      font-weight: 500;
+      display: flex;
+      align-items: center;
+      gap: 0.45rem;
+    }
+
+    .nav-pill-custom {
+      display: flex;
+      align-items: center;
+      gap: 0.65rem;
+      padding: 0.45rem 0.75rem;
+      border-radius: 9px;
+      color: #4b5563;
+      text-decoration: none;
+      font-weight: 500;
+      font-size: 0.8rem;
+      transition: all 0.2s ease;
+      margin-bottom: 0.15rem;
+      cursor: pointer;
+    }
+
+    .nav-pill-custom:hover {
+      background-color: #f3f4f6;
+      color: #111827;
+    }
+
+    .nav-pill-custom.active {
+      background: linear-gradient(90deg, #ff6b4a, #ff5733);
+      color: #ffffff;
+      box-shadow: 0 3px 8px rgba(255, 94, 58, 0.2);
+    }
+
+    .sidebar-footer-wrapper {
+      margin-top: auto;
+      padding-top: 0.75rem;
+      border-top: 1px solid var(--border-color);
+    }
+
+    .sidebar-user-container {
+      background: #ffffff;
+      border: 1px solid #e2e8f0;
+      border-radius: 12px;
+      padding: 0.45rem 0.65rem;
+      box-shadow: 0 4px 14px rgba(0, 0, 0, 0.09), 0 1px 3px rgba(0, 0, 0, 0.04);
+      transition: all 0.2s ease;
+    }
+
+    .admin-dropdown-menu {
+      background: #ffffff;
+      border: 1px solid #e2e8f0 !important;
+      border-radius: 12px;
+      padding: 0.4rem;
+      min-width: 175px;
+      box-shadow: 0 10px 25px -5px rgba(0, 0, 0, 0.12), 0 8px 10px -6px rgba(0, 0, 0, 0.08) !important;
+      font-size: 0.78rem;
+    }
+
+    .admin-dropdown-menu .dropdown-item {
+      padding: 0.4rem 0.65rem;
+      border-radius: 8px;
+    }
+
+    .admin-dropdown-menu .dropdown-item:hover {
+      background-color: #f8fafc;
+    }
+
+    .admin-menu-btn::after {
+      display: none !important;
+    }
+
+    .admin-menu-btn {
+      color: var(--text-muted-color);
+      border: none;
+      background: transparent;
+      padding: 0.25rem;
+      border-radius: 6px;
+      display: inline-flex;
+      align-items: center;
+      justify-content: center;
+    }
+
+    .main-viewport {
+      display: flex;
+      flex-direction: column;
+      height: 100vh;
+      overflow: hidden;
+      background: var(--bg-canvas);
+    }
+
+    /* Fixed Top Header */
+    .header-wrapper {
+      padding: 0.75rem 1.25rem 0.4rem 1.25rem;
+      flex-shrink: 0;
+      position: sticky;
+      top: 0;
+      z-index: 1020;
+      background-color: var(--bg-canvas);
+    }
+
+    .app-header-box {
+      background: #ffffff;
+      border: 1px solid var(--border-color);
+      border-radius: 12px;
+      padding: 0.75rem 1rem;
+      box-shadow: 0 1px 4px rgba(0, 0, 0, 0.02);
+    }
+
+    .icon-btn {
+      width: 32px;
+      height: 32px;
+      display: inline-flex;
+      align-items: center;
+      justify-content: center;
+      border-radius: 50%;
+      background: #ffffff;
+      border: 1px solid var(--border-color);
+      color: #4b5563;
+      font-size: 0.85rem;
+      position: relative;
+    }
+
+    /* Scrollable Container (Independent of fixed header) */
+    .content-scrollable {
+      flex: 1;
+      overflow-y: auto;
+      -webkit-overflow-scrolling: touch;
+      padding: 0.5rem 1.25rem 1.25rem 1.25rem;
+    }
+
+    .metric-card, .ui-panel-card {
+      background: #ffffff;
+      border-radius: 12px;
+      padding: 0.75rem 0.9rem;
+      border: 1px solid var(--border-color);
+    }
+
+    .metric-number {
+      font-size: 1.35rem;
+      font-weight: 700;
+      line-height: 1.1;
+      margin-bottom: 0.2rem;
+      color: #111827;
+    }
+
+    .metric-label {
+      font-size: 0.7rem;
+      color: var(--text-muted-color);
+      font-weight: 500;
+    }
+
+    .filter-pills {
+      background: #ffffff;
+      border-radius: 20px;
+      padding: 0.2rem 0.3rem;
+      display: inline-flex;
+      border: 1px solid var(--border-color);
+      flex-wrap: nowrap;
+      overflow-x: auto;
+      white-space: nowrap;
+      max-width: 100%;
+    }
+
+    .filter-btn {
+      border: none;
+      background: transparent;
+      padding: 0.25rem 0.75rem;
+      border-radius: 16px;
+      font-size: 0.75rem;
+      font-weight: 600;
+      color: #6b7280;
+      transition: all 0.2s;
+    }
+
+    .filter-btn.active {
+      background-color: var(--primary-orange-light);
+      color: var(--primary-orange);
+    }
+
+    .order-card {
+      background: #ffffff;
+      border-radius: 12px;
+      padding: 0.85rem;
+      border: 1px solid var(--border-color);
+      transition: transform 0.15s ease, box-shadow 0.15s ease;
+    }
+
+    .dish-title {
+      font-size: 0.82rem;
+      font-weight: 700;
+      margin-bottom: 0.1rem;
+      color: #111827;
+    }
+
+    .order-sub { font-size: 0.68rem; }
+    .badge-served { background-color: #ebf5ff; color: #2563eb; }
+    .badge-pending { background-color: #fff7ed; color: #ea580c; }
+    .badge-completed { background-color: #f0fdf4; color: #16a34a; }
+    .badge-occupied { background-color: #fef2f2; color: #dc2626; }
+    .badge-available { background-color: #f0fdf4; color: #16a34a; }
+
+    .badge-custom {
+      font-size: 0.68rem;
+      font-weight: 600;
+      padding: 0.2em 0.55em;
+      border-radius: 6px;
+    }
+
+    .meta-text { font-size: 0.7rem; }
+
+    .price-text {
+      color: var(--primary-orange);
+      font-weight: 700;
+      font-size: 0.95rem;
+    }
+
+    .search-input-group {
+      background: #ffffff;
+      border: 1px solid var(--border-color);
+      border-radius: 10px;
+      padding: 0.3rem 0.65rem;
+      display: flex;
+      align-items: center;
+      min-width: 190px;
+    }
+
+    .search-input-group input {
+      border: none;
+      outline: none;
+      font-size: 0.75rem;
+      background: transparent;
+      width: 100%;
+    }
+
+    .kbd-badge {
+      font-size: 0.62rem;
+      color: var(--text-muted-color);
+      border: 1px solid var(--border-color);
+      border-radius: 4px;
+      padding: 1px 4px;
+    }
+
+    .custom-pagination .page-btn {
+      width: 26px;
+      height: 26px;
+      display: inline-flex;
+      align-items: center;
+      justify-content: center;
+      border-radius: 6px;
+      border: 1px solid var(--border-color);
+      background: #fff;
+      font-size: 0.72rem;
+      color: #4b5563;
+      cursor: pointer;
+      text-decoration: none;
+    }
+
+    .custom-pagination .page-btn.active {
+      background: #f3f4f6;
+      font-weight: 700;
+      color: #111827;
+    }
+
+    .view-page { display: none; }
+    .view-page.active-view { display: block; }
+
+    .btn-orange {
+      background: var(--primary-orange);
+      color: #fff;
+      border: none;
+    }
+    .btn-orange:hover {
+      background: #e64a27;
+      color: #fff;
+    }
+
+    /* Form Request Styles */
+    .form-req-container {
+      background: #ffffff;
+      border: 1px solid var(--border-color);
+      border-radius: 16px;
+      box-shadow: 0 4px 20px rgba(0, 0, 0, 0.03);
+      display: flex;
+      flex-direction: column;
+      overflow: hidden;
+      min-height: calc(100vh - 120px);
+    }
+
+    .form-req-topbar {
+      border-bottom: 1px solid var(--border-color);
+      padding: 0.6rem 1.25rem;
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      background: #ffffff;
+      flex-wrap: wrap;
+      gap: 0.5rem;
+    }
+
+    .form-req-tabs { display: flex; gap: 1.25rem; }
+
+    .form-req-tab-btn {
+      background: transparent;
+      border: none;
+      font-weight: 600;
+      font-size: 0.85rem;
+      color: #64748b;
+      padding: 0.4rem 0.2rem;
+      position: relative;
+      cursor: pointer;
+    }
+
+    .form-req-tab-btn.active { color: #0f172a; }
+    .form-req-tab-btn.active::after {
+      content: '';
+      position: absolute;
+      bottom: -0.65rem;
+      left: 0;
+      right: 0;
+      height: 2px;
+      background-color: var(--editor-orange);
+    }
+
+    .btn-publish {
+      background-color: var(--editor-orange);
+      color: #ffffff;
+      border: none;
+      font-size: 0.78rem;
+      font-weight: 600;
+      padding: 0.4rem 1.1rem;
+      border-radius: 8px;
+    }
+
+    .form-req-main { display: flex; flex: 1; }
+
+    .form-req-left-pane {
+      width: 280px;
+      min-width: 280px;
+      border-right: 1px solid var(--border-color);
+      padding: 1rem;
+      background: #ffffff;
+      display: flex;
+      flex-direction: column;
+      gap: 0.75rem;
+    }
+
+    .segment-switch {
+      background: #f1f5f9;
+      border-radius: 8px;
+      padding: 2px;
+      display: flex;
+    }
+
+    .segment-btn {
+      flex: 1;
+      border: none;
+      background: transparent;
+      font-size: 0.75rem;
+      font-weight: 600;
+      color: #64748b;
+      padding: 0.35rem 0;
+      border-radius: 6px;
+    }
+
+    .segment-btn.active { background: #ffffff; color: #0f172a; }
+
+    .pane-search-box {
+      border: 1px solid var(--border-color);
+      border-radius: 8px;
+      padding: 0.35rem 0.65rem;
+      display: flex;
+      align-items: center;
+      background: #ffffff;
+    }
+
+    .pane-search-box input {
+      border: none;
+      outline: none;
+      width: 100%;
+      font-size: 0.75rem;
+      color: #334155;
+    }
+
+    .tree-nav-group { display: flex; flex-direction: column; gap: 0.2rem; }
+
+    .tree-header {
+      font-weight: 600;
+      font-size: 0.78rem;
+      color: #334155;
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      padding: 0.35rem 0.4rem;
+      cursor: pointer;
+    }
+
+    .tree-item {
+      padding: 0.4rem 0.65rem;
+      border-radius: 8px;
+      font-size: 0.78rem;
+      color: #475569;
+      font-weight: 500;
+      cursor: pointer;
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+    }
+
+    .tree-item.active { background-color: var(--editor-orange); color: #ffffff; font-weight: 600; }
+
+    .tree-add-btn {
+      color: var(--editor-orange);
+      font-weight: 600;
+      font-size: 0.75rem;
+      background: transparent;
+      border: none;
+      padding: 0.35rem 0.4rem;
+      display: inline-flex;
+      align-items: center;
+      gap: 0.35rem;
+      cursor: pointer;
+    }
+
+    .form-req-editor-pane { flex: 1; padding: 1.25rem 2rem; background: #ffffff; }
+
+    .form-breadcrumb {
+      font-size: 0.72rem;
+      color: #64748b;
+      margin-bottom: 1.25rem;
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+    }
+
+    .form-field-label {
+      font-size: 0.76rem;
+      font-weight: 600;
+      color: #334155;
+      margin-bottom: 0.35rem;
+    }
+
+    .form-req-control {
+      border: 1px solid #cbd5e1;
+      border-radius: 8px;
+      padding: 0.45rem 0.75rem;
+      font-size: 0.8rem;
+      color: #1e293b;
+      width: 100%;
+    }
+
+    .form-req-control:focus {
+      border-color: var(--editor-orange);
+      outline: none;
+      box-shadow: 0 0 0 2px rgba(255, 94, 58, 0.15);
+    }
+
+    .input-unit-group { position: relative; }
+    .input-unit-tag {
+      position: absolute;
+      right: 0.75rem;
+      top: 50%;
+      transform: translateY(-50%);
+      font-size: 0.72rem;
+      color: #94a3b8;
+      font-weight: 600;
+    }
+
+    .form-check-input:checked {
+      background-color: var(--editor-orange);
+      border-color: var(--editor-orange);
+    }
+
+    .image-thumb-box {
+      width: 65px;
+      height: 48px;
+      border-radius: 6px;
+      object-fit: cover;
+      border: 1px solid var(--border-color);
+    }
+
+    /* Mobile Bottom Navigation Bar */
+    .mobile-bottom-nav {
+      display: none;
+      position: fixed;
+      bottom: 0;
+      left: 0;
+      right: 0;
+      height: 56px;
+      background: #ffffff;
+      border-top: 1px solid var(--border-color);
+      z-index: 1040;
+      justify-content: space-around;
+      align-items: center;
+      box-shadow: 0 -2px 10px rgba(0,0,0,0.03);
+    }
+
+    .mobile-nav-btn {
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      justify-content: center;
+      border: none;
+      background: transparent;
+      color: #64748b;
+      font-size: 0.65rem;
+      font-weight: 500;
+      gap: 2px;
+      cursor: pointer;
+      padding: 4px;
+    }
+
+    .mobile-nav-btn i { font-size: 1.1rem; }
+    .mobile-nav-btn.active { color: var(--primary-orange); font-weight: 700; }
+
+    /* Mobile Responsive Viewport Setup */
+    @media (max-width: 991.98px) {
+      body {
+        height: 100vh;
+        overflow: hidden;
+      }
+      .sidebar-desktop {
+        display: none !important;
+      }
+      .main-viewport {
+        height: calc(100vh - 56px); /* Reserves bottom space for mobile navigation */
+        overflow: hidden;
+      }
+      .header-wrapper {
+        padding: 0.6rem 0.8rem 0.4rem 0.8rem;
+      }
+      .content-scrollable {
+        padding: 0.5rem 0.8rem 1.5rem 0.8rem;
+      }
+      .mobile-bottom-nav {
+        display: flex;
+      }
+      .form-req-main {
+        flex-direction: column;
+      }
+      .form-req-left-pane {
+        width: 100%;
+        min-width: 100%;
+        border-right: none;
+        border-bottom: 1px solid var(--border-color);
+      }
+      .form-req-editor-pane {
+        padding: 1rem;
+      }
+    }
+  </style>
+</head>
+<body>
+
+<!-- 1. MODERN MINIMAL LOGIN SCREEN -->
+<div id="authView">
+  <div class="clean-login-card">
+    <div class="text-center mb-4">
+      <div class="login-logo-container">
+        <img src="HRMS.png" alt="HRMS Logo" />
+      </div>
+      <h5 class="fw-bold text-dark mb-1">HRMS Portal</h5>
+      <p class="text-muted small mb-0">Sign in to your restaurant workspace</p>
+    </div>
+
+    <div class="quick-account-pill mb-3" id="quickFillDemoBtn">
+      <div class="d-flex align-items-center gap-2">
+        <i class="bi bi-person-badge text-muted"></i>
+        <span><strong>Admin Demo:</strong> admin@hrms.com</span>
+      </div>
+      <span class="badge bg-white text-dark border">Fill</span>
+    </div>
+
+    <form id="loginForm">
+      <div class="field-wrapper">
+        <label class="field-label">Email Address</label>
+        <div class="field-input-box">
+          <i class="bi bi-envelope"></i>
+          <input type="email" id="loginEmail" value="admin@hrms.com" placeholder="name@company.com" required>
+        </div>
+      </div>
+
+      <div class="field-wrapper">
+        <div class="d-flex justify-content-between align-items-center mb-1">
+          <label class="field-label mb-0">Password</label>
+          <a href="#" class="text-decoration-none text-muted" style="font-size: 0.68rem;">Forgot password?</a>
+        </div>
+        <div class="field-input-box">
+          <i class="bi bi-lock"></i>
+          <input type="password" id="loginPassword" value="password" placeholder="••••••••" required>
+          <button type="button" class="toggle-pass-btn" id="togglePasswordBtn">
+            <i class="bi bi-eye m-0" id="togglePasswordIcon"></i>
+          </button>
+        </div>
+      </div>
+
+      <div class="form-check mb-4 mt-2">
+        <input class="form-check-input" type="checkbox" id="rememberMe" checked>
+        <label class="form-check-label text-muted" for="rememberMe" style="font-size: 0.72rem;">Stay signed in</label>
+      </div>
+
+      <button type="submit" class="btn-login-submit">
+        <span>Sign In</span>
+        <i class="bi bi-arrow-right ms-1"></i>
+      </button>
+    </form>
+  </div>
+</div>
+
+<!-- 2. MAIN APPLICATION PORTAL -->
+<div class="container-fluid p-0" id="appView">
+  <div class="row g-0">
+    
+    <!-- Desktop Fixed Sidebar -->
+    <aside class="col-lg-3 col-xl-2 sidebar-desktop">
+      <div class="overflow-y-auto">
+        <div class="d-flex align-items-center gap-2 mb-3">
+          <img src="HRMS.png" alt="HRMS Logo" class="brand-logo-img" />
+          <span class="fs-6 fw-bold text-dark">HRMS</span>
+        </div>
+
+        <div class="mb-3">
+          <div class="store-select">
+            <img src="https://images.unsplash.com/photo-1555396273-367ea4eb4db5?w=50&auto=format&fit=crop&q=60" class="rounded" width="18" height="18" alt="Store">
+            <span class="text-truncate">Dashboard</span>
+          </div>
+        </div>
+
+        <div class="mb-3">
+          <div class="nav-section-title">Timekeeping</div>
+          <nav class="nav flex-column">
+            <a class="nav-pill-custom" data-target="page-dashboard">
+              <i class="bi bi-grid"></i> Time Log
+            </a>
+            <a class="nav-pill-custom active" data-target="page-orders">
+              <i class="bi bi-receipt"></i> Form Request
+            </a>
+            <a class="nav-pill-custom" data-target="page-orders">
+              <i class="bi bi-file-earmark-text"></i> Vacation Leave Ledger
+            </a>
+            <a class="nav-pill-custom" data-target="page-tables">
+              <i class="bi bi-cup-straw"></i> View Logs
+            </a>
+            <a class="nav-pill-custom" data-target="page-kitchen"><i class="bi bi-egg-fried"></i> Kitchen</a>
+            <a class="nav-pill-custom" data-target="page-menus"><i class="bi bi-journal-text"></i> Menus</a>
+            <a class="nav-pill-custom" data-target="page-analytics"><i class="bi bi-graph-up"></i> Analytics</a>
+          </nav>
+        </div>
+
+        <div class="mb-3">
+          <div class="nav-section-title">Others</div>
+          <nav class="nav flex-column">
+            <a class="nav-pill-custom" data-target="page-help"><i class="bi bi-question-circle"></i> Help</a>
+            <a class="nav-pill-custom" data-target="page-settings"><i class="bi bi-gear"></i> Settings</a>
+          </nav>
+        </div>
+      </div>
+
+      <!-- User Profile (Bottom Left) -->
+      <div class="sidebar-footer-wrapper">
+        <div class="sidebar-user-container d-flex align-items-center justify-content-between dropdown">
+          <div class="d-flex align-items-center gap-2">
+            <img src="https://images.unsplash.com/photo-1534528741775-53994a69daeb?w=100&auto=format&fit=crop&q=80" class="rounded-circle" width="28" height="28" alt="Avatar">
+            <div>
+              <div class="fw-bold" style="font-size: 0.75rem; line-height: 1.1;">John Holland</div>
+              <div class="text-muted" style="font-size: 0.65rem;">Admin</div>
+            </div>
+          </div>
+          
+          <button class="admin-menu-btn dropdown-toggle" type="button" data-bs-toggle="dropdown" aria-expanded="false" title="Account Menu">
+            <i class="bi bi-three-dots-vertical fs-6"></i>
+          </button>
+          
+          <ul class="dropdown-menu dropdown-menu-end admin-dropdown-menu">
+            <li>
+              <a class="dropdown-item" href="#" data-bs-toggle="modal" data-bs-target="#profileModal">
+                <i class="bi bi-person me-2 text-muted"></i>My Profile
+              </a>
+            </li>
+            <li>
+              <a class="dropdown-item" href="#" data-bs-toggle="modal" data-bs-target="#profileModal">
+                <i class="bi bi-sliders me-2 text-muted"></i>Preferences
+              </a>
+            </li>
+            <li><hr class="dropdown-divider my-1" style="border-color: #edf2f7;"></li>
+            <li>
+              <a class="dropdown-item text-danger fw-semibold" href="#" id="logoutBtn">
+                <i class="bi bi-box-arrow-right me-2"></i>Logout
+              </a>
+            </li>
+          </ul>
+        </div>
+      </div>
+    </aside>
+
+    <!-- Main Viewport Area -->
+    <main class="col-12 col-lg-9 col-xl-10 main-viewport">
+      
+      <!-- Top Fixed Header -->
+      <div class="header-wrapper">
+        <header class="app-header-box d-flex justify-content-between align-items-center">
+          <div class="d-flex align-items-center gap-2">
+            <button class="btn btn-sm btn-light border d-lg-none py-1 px-2" type="button" data-bs-toggle="offcanvas" data-bs-target="#mobileSidebarDrawer">
+              <i class="bi bi-list fs-6"></i>
+            </button>
+            <div>
+              <h1 class="h6 fw-bold mb-0 text-dark" id="headerTitle">Orders</h1>
+              <p class="text-muted mb-0 d-none d-sm-block" style="font-size: 0.72rem;" id="headerSubtitle">Manage all orders of the restaurant.</p>
+            </div>
+          </div>
+
+          <!-- <div class="d-flex align-items-center gap-2">
+            <div class="dropdown">
+              <button class="icon-btn" data-bs-toggle="dropdown" aria-expanded="false">
+                <i class="bi bi-bell"></i>
+                <span class="position-absolute top-0 start-100 translate-middle badge rounded-pill bg-danger" style="font-size: 0.55rem; padding: 0.2em 0.4em;">3+</span>
+              </button>
+              <ul class="dropdown-menu dropdown-menu-end admin-dropdown-menu p-2" style="width: 260px;">
+                <li class="fw-bold px-2 py-1 border-bottom mb-1">Notifications</li>
+                <li><a class="dropdown-item rounded-2 py-1 text-wrap" href="#"><strong>Table 4</strong> placed a new order.</a></li>
+                <li><a class="dropdown-item rounded-2 py-1 text-wrap" href="#"><strong>Kitchen</strong> finished Order #2025101.</a></li>
+                <li><a class="dropdown-item rounded-2 py-1 text-wrap text-danger" href="#"><strong>Inventory:</strong> Chicken low stock.</a></li>
+              </ul>
+            </div>
+
+            <button class="icon-btn" data-target="page-settings" id="headerGearBtn">
+              <i class="bi bi-gear"></i>
+            </button>
+          </div> -->
+        </header>
+      </div>
+
+      <!-- Scrollable Main Content Frame -->
+      <div class="content-scrollable">
+
+        <!-- PAGE: ORDERS -->
+        <div class="view-page active-view" id="page-orders">
+          <div class="row row-cols-2 row-cols-md-3 row-cols-xl-6 g-2 mb-3">
+            <div class="col">
+              <div class="metric-card">
+                <div class="metric-number">19</div>
+                <div class="metric-label">Total Orders</div>
+              </div>
+            </div>
+            <div class="col">
+              <div class="metric-card">
+                <div class="metric-number">3</div>
+                <div class="metric-label">Pending Orders</div>
+              </div>
+            </div>
+            <div class="col">
+              <div class="metric-card">
+                <div class="metric-number">6</div>
+                <div class="metric-label">Preparing Orders</div>
+              </div>
+            </div>
+            <div class="col">
+              <div class="metric-card">
+                <div class="metric-number">5</div>
+                <div class="metric-label">Served Orders</div>
+              </div>
+            </div>
+            <div class="col">
+              <div class="metric-card">
+                <div class="metric-number">5</div>
+                <div class="metric-label">Completed</div>
+              </div>
+            </div>
+            <div class="col">
+              <div class="metric-card">
+                <div class="metric-number">2</div>
+                <div class="metric-label">Cancelled</div>
+              </div>
+            </div>
+          </div>
+
+          <div class="d-flex flex-column flex-md-row justify-content-between align-items-stretch align-items-md-center gap-2 mb-3">
+            <div class="filter-pills" id="filterContainer">
+              <button class="filter-btn active" data-filter="all">All</button>
+              <button class="filter-btn" data-filter="Pending">Pending</button>
+              <button class="filter-btn" data-filter="Preparing">Preparing</button>
+              <button class="filter-btn" data-filter="Served">Served</button>
+              <button class="filter-btn" data-filter="Completed">Completed</button>
+              <button class="filter-btn" data-filter="Cancelled">Cancelled</button>
+            </div>
+
+            <div class="search-input-group">
+              <i class="bi bi-search text-muted me-2" style="font-size: 0.75rem;"></i>
+              <input type="text" id="orderSearch" placeholder="Search..." />
+              <span class="kbd-badge ms-1 d-none d-sm-inline"><i class="bi bi-command"></i>K</span>
+            </div>
+          </div>
+
+          <div class="row g-2" id="ordersGrid">
+            <div class="col-12 col-md-6 col-xl-4 order-item" data-status="Served">
+              <div class="order-card">
+                <div class="d-flex justify-content-between align-items-start mb-1">
+                  <div>
+                    <div class="dish-title">Kung Pao Chicken</div>
+                    <div class="text-muted order-sub">Order #20251011064916</div>
+                  </div>
+                  <span class="badge-custom badge-served">Served</span>
+                </div>
+                <div class="text-muted meta-text d-flex align-items-center gap-2 my-1">
+                  <span><i class="bi bi-clock me-1"></i>09:32:28</span>
+                  <span><i class="bi bi-calendar3 me-1"></i>2025-10-14</span>
+                </div>
+                <div class="text-muted meta-text mb-2"><i class="bi bi-cup me-1"></i>Table 1</div>
+                <div class="d-flex justify-content-between align-items-center pt-1 border-top">
+                  <span class="fw-semibold" style="font-size: 0.75rem;">3 Items</span>
+                  <span class="price-text">$93.00</span>
+                </div>
+              </div>
+            </div>
+
+            <div class="col-12 col-md-6 col-xl-4 order-item" data-status="Pending">
+              <div class="order-card">
+                <div class="d-flex justify-content-between align-items-start mb-1">
+                  <div>
+                    <div class="dish-title">Kung Pao Chicken</div>
+                    <div class="text-muted order-sub">Order #20251011064916</div>
+                  </div>
+                  <span class="badge-custom badge-pending">Pending</span>
+                </div>
+                <div class="text-muted meta-text d-flex align-items-center gap-2 my-1">
+                  <span><i class="bi bi-clock me-1"></i>09:32:28</span>
+                  <span><i class="bi bi-calendar3 me-1"></i>2025-10-14</span>
+                </div>
+                <div class="text-muted meta-text mb-2"><i class="bi bi-cup me-1"></i>Table 1</div>
+                <div class="d-flex justify-content-between align-items-center pt-1 border-top">
+                  <span class="fw-semibold" style="font-size: 0.75rem;">3 Items</span>
+                  <span class="price-text">$93.00</span>
+                </div>
+              </div>
+            </div>
+
+            <div class="col-12 col-md-6 col-xl-4 order-item" data-status="Completed">
+              <div class="order-card">
+                <div class="d-flex justify-content-between align-items-start mb-1">
+                  <div>
+                    <div class="dish-title">Kung Pao Chicken</div>
+                    <div class="text-muted order-sub">Order #20251011064916</div>
+                  </div>
+                  <span class="badge-custom badge-completed">Completed</span>
+                </div>
+                <div class="text-muted meta-text d-flex align-items-center gap-2 my-1">
+                  <span><i class="bi bi-clock me-1"></i>09:32:28</span>
+                  <span><i class="bi bi-calendar3 me-1"></i>2025-10-14</span>
+                </div>
+                <div class="text-muted meta-text mb-2"><i class="bi bi-cup me-1"></i>Table 1</div>
+                <div class="d-flex justify-content-between align-items-center pt-1 border-top">
+                  <span class="fw-semibold" style="font-size: 0.75rem;">3 Items</span>
+                  <span class="price-text">$93.00</span>
+                </div>
+              </div>
+            </div>
+          </div>
+
+          <footer class="d-flex flex-column flex-md-row justify-content-between align-items-center gap-2 mt-3 pt-1">
+            <span class="text-muted" style="font-size: 0.72rem;">Page 1 of 16</span>
+            <div class="custom-pagination d-flex align-items-center gap-1">
+              <button class="page-btn"><i class="bi bi-chevron-left"></i></button>
+              <button class="page-btn active">1</button>
+              <button class="page-btn">2</button>
+              <button class="page-btn">3</button>
+              <button class="page-btn"><i class="bi bi-chevron-right"></i></button>
+            </div>
+            <div class="dropdown">
+              <button class="btn btn-sm dropdown-toggle rounded-2 px-2 py-1 bg-white text-dark border" style="font-size: 0.72rem;" type="button" data-bs-toggle="dropdown">
+                8 data per row
+              </button>
+              <ul class="dropdown-menu dropdown-menu-end" style="font-size: 0.75rem;">
+                <li><a class="dropdown-item" href="#">8 data per row</a></li>
+                <li><a class="dropdown-item" href="#">16 data per row</a></li>
+              </ul>
+            </div>
+          </footer>
+        </div>
+
+        <!-- PAGE: FORM REQUEST -->
+        <div class="view-page" id="page-form-request">
+          <div class="form-req-container">
+            <div class="form-req-topbar">
+              <div class="form-req-tabs">
+                <button class="form-req-tab-btn active" data-subtab="content">Content</button>
+                <button class="form-req-tab-btn" data-subtab="preview">Preview</button>
+                <button class="form-req-tab-btn" data-subtab="settings">Settings</button>
+              </div>
+              <div class="d-flex align-items-center gap-3">
+                <div class="text-end d-none d-md-block">
+                  <div class="fw-semibold text-muted" style="font-size: 0.72rem;">
+                    <span class="text-warning me-1">●</span>You have unpublished changes
+                  </div>
+                  <div class="text-muted" style="font-size: 0.65rem;">Last published: 24 minutes ago</div>
+                </div>
+                <button class="btn-publish">Publish</button>
+              </div>
+            </div>
+
+            <!-- Tab 1: Content -->
+            <div class="form-req-main form-subtab-view active" id="subtab-content">
+              <div class="form-req-left-pane">
+                <div class="segment-switch">
+                  <button class="segment-btn active">Edit</button>
+                  <button class="segment-btn">Translate</button>
+                </div>
+
+                <div class="pane-search-box">
+                  <i class="bi bi-search text-muted me-2" style="font-size: 0.75rem;"></i>
+                  <input type="text" placeholder="Search..." />
+                </div>
+
+                <div class="tree-nav-group mt-2">
+                  <div class="tree-header">
+                    <span><i class="bi bi-chevron-down me-1" style="font-size: 0.65rem;"></i> Home page</span>
+                  </div>
+                  <div class="ps-3 d-flex flex-column gap-1">
+                    <div class="text-muted" style="font-size: 0.75rem; padding: 0.2rem 0.4rem;">Super sale 2026</div>
+                    <div class="tree-item">
+                      <span>October fest promotion name</span>
+                      <i class="bi bi-chevron-down text-muted" style="font-size: 0.65rem;"></i>
+                    </div>
+                    <button class="tree-add-btn"><i class="bi bi-plus"></i> Add new promotion</button>
+                  </div>
+                </div>
+
+                <div class="tree-nav-group mt-2">
+                  <div class="tree-header">
+                    <span><i class="bi bi-chevron-down me-1" style="font-size: 0.65rem;"></i> Non Alcoholic Drinks</span>
+                  </div>
+                  <div class="ps-3 d-flex flex-column gap-1">
+                    <div class="text-muted fw-semibold" style="font-size: 0.75rem; padding: 0.2rem 0.4rem;">
+                      <i class="bi bi-chevron-down me-1" style="font-size: 0.65rem;"></i> Milkshake & Frappe
+                    </div>
+                    <div class="tree-item active">Classic Vanilla Milkshake</div>
+                    <div class="tree-item">Double Chocolate Frappe</div>
+                    <div class="tree-item">
+                      <span>Strawberry Dream Milkshake</span>
+                      <i class="bi bi-chevron-down text-muted" style="font-size: 0.65rem;"></i>
+                    </div>
+                    <div class="tree-item">Caramel Frappe</div>
+                    <button class="tree-add-btn"><i class="bi bi-plus"></i> Add new product</button>
+                  </div>
+                </div>
+
+                <div class="tree-nav-group mt-2">
+                  <div class="tree-header text-muted">
+                    <span><i class="bi bi-chevron-right me-1" style="font-size: 0.65rem;"></i> Alcoholic Drinks</span>
+                  </div>
+                  <div class="tree-header text-muted">
+                    <span><i class="bi bi-chevron-right me-1" style="font-size: 0.65rem;"></i> Hookahs</span>
+                  </div>
+                  <button class="tree-add-btn"><i class="bi bi-plus"></i> Add new section</button>
+                </div>
+              </div>
+
+              <div class="form-req-editor-pane">
+                <div class="form-breadcrumb">
+                  <div class="text-truncate me-2">Non Alcoholic Drinks &gt; Milkshake & Frappe &gt; <span class="text-muted">Classic Vanilla Milkshake</span></div>
+                  <div class="d-flex align-items-center gap-2">
+                    <div class="btn-group btn-group-sm border rounded-2" role="group">
+                      <button type="button" class="btn btn-light btn-sm py-0 px-2"><i class="bi bi-eye-slash"></i></button>
+                      <button type="button" class="btn btn-light btn-sm py-0 px-2 active"><i class="bi bi-eye"></i></button>
+                    </div>
+                    <button class="btn btn-sm btn-link text-muted p-0"><i class="bi bi-three-dots-vertical"></i></button>
+                  </div>
+                </div>
+
+                <div class="row g-3 mb-3">
+                  <div class="col-12">
+                    <label class="form-field-label">Name</label>
+                    <input type="text" class="form-req-control" value="Classic Vanilla Milkshake">
+                  </div>
+
+                  <div class="col-12 col-md-4">
+                    <label class="form-field-label">Price</label>
+                    <div class="input-unit-group">
+                      <input type="text" class="form-req-control pe-5" value="250">
+                      <span class="input-unit-tag">RON</span>
+                    </div>
+                  </div>
+
+                  <div class="col-12 col-md-4">
+                    <label class="form-field-label">Yield</label>
+                    <input type="text" class="form-req-control" value="350 ml">
+                  </div>
+
+                  <div class="col-12 col-md-4">
+                    <label class="form-field-label">Nutrition</label>
+                    <input type="text" class="form-req-control" value="687 kcal">
+                  </div>
+                </div>
+
+                <div class="mb-3">
+                  <div class="form-check form-switch d-flex align-items-center gap-2 ps-0 mb-2">
+                    <input class="form-check-input ms-0 mt-0" type="checkbox" role="switch" id="soldOutToggle" checked>
+                    <label class="form-check-label fw-semibold" for="soldOutToggle" style="font-size: 0.78rem;">Mark as sold out</label>
+                  </div>
+                  <div class="text-muted" style="font-size: 0.7rem; margin-left: 2.8rem; margin-top: -0.35rem;">
+                    Indicates that the item is currently unavailable.
+                  </div>
+                </div>
+
+                <div class="mb-3">
+                  <div class="form-check form-switch d-flex align-items-center gap-2 ps-0 mb-2">
+                    <input class="form-check-input ms-0 mt-0" type="checkbox" role="switch" id="popularToggle">
+                    <label class="form-check-label fw-semibold" for="popularToggle" style="font-size: 0.78rem;">Mark as popular</label>
+                  </div>
+                  <div class="text-muted" style="font-size: 0.7rem; margin-left: 2.8rem; margin-top: -0.35rem;">
+                    Highlight this item and display it in the "Popular" section on the main page.
+                  </div>
+                </div>
+
+                <div class="mb-3">
+                  <label class="form-field-label">Description</label>
+                  <textarea class="form-req-control" rows="2">Smooth and creamy vanilla milkshake made with whole milk and real vanilla extract.</textarea>
+                </div>
+
+                <div class="mb-3">
+                  <label class="form-field-label">Ingredients</label>
+                  <textarea class="form-req-control" rows="2">Milk, vanilla extract, ice cream, sugar</textarea>
+                </div>
+
+                <div class="mb-3">
+                  <div class="d-flex justify-content-between align-items-center mb-2">
+                    <div>
+                      <div class="form-field-label mb-0">Images</div>
+                      <span class="text-muted" style="font-size: 0.68rem;">Minimum photo size is 1140×1140 pixels.</span>
+                    </div>
+                    <button class="tree-add-btn p-0"><i class="bi bi-plus"></i> Add new</button>
+                  </div>
+                  <div class="d-flex gap-2 flex-wrap">
+                    <img src="https://images.unsplash.com/photo-1572490122747-3968b75cc699?w=150&auto=format&fit=crop&q=80" class="image-thumb-box" alt="Thumb">
+                    <img src="https://images.unsplash.com/photo-1579954115545-a95591f28bfc?w=150&auto=format&fit=crop&q=80" class="image-thumb-box" alt="Thumb">
+                  </div>
+                </div>
+
+              </div>
+            </div>
+
+            <!-- Tab 2: Preview -->
+            <div class="form-subtab-view p-3 text-center" id="subtab-preview" style="display: none;">
+              <div class="p-3 border rounded-3 bg-light d-inline-block text-start w-100" style="max-width: 340px;">
+                <img src="https://images.unsplash.com/photo-1572490122747-3968b75cc699?w=400&auto=format&fit=crop&q=80" class="w-100 rounded-3 mb-2" style="height: 180px; object-fit: cover;">
+                <div class="d-flex justify-content-between align-items-center mb-1">
+                  <h6 class="fw-bold mb-0">Classic Vanilla Milkshake</h6>
+                  <span class="fw-bold" style="color: var(--editor-orange);">250 RON</span>
+                </div>
+                <p class="text-muted small mb-2">Smooth and creamy vanilla milkshake made with whole milk and real vanilla extract.</p>
+                <div class="badge bg-secondary">350 ml</div>
+                <div class="badge bg-secondary">687 kcal</div>
+              </div>
+            </div>
+
+            <!-- Tab 3: Settings -->
+            <div class="form-subtab-view p-3" id="subtab-settings" style="display: none;">
+              <div class="p-3 border rounded-3">
+                <h6 class="fw-bold mb-3">Form Request Settings</h6>
+                <div class="mb-3">
+                  <label class="form-field-label">Menu Currency</label>
+                  <input type="text" class="form-req-control" style="max-width: 140px;" value="RON">
+                </div>
+                <div class="form-check form-switch mb-2">
+                  <input class="form-check-input" type="checkbox" id="autoPublish" checked>
+                  <label class="form-check-label" for="autoPublish">Auto-save and draft changes</label>
+                </div>
+              </div>
+            </div>
+
+          </div>
+        </div>
+
+        <!-- PAGE: DASHBOARD -->
+        <div class="view-page" id="page-dashboard">
+          <div class="row g-2 mb-3">
+            <div class="col-12 col-md-4">
+              <div class="metric-card">
+                <div class="metric-number">$2,845.00</div>
+                <div class="metric-label">Today's Total Revenue</div>
+              </div>
+            </div>
+            <div class="col-12 col-md-4">
+              <div class="metric-card">
+                <div class="metric-number">128</div>
+                <div class="metric-label">Customers Served</div>
+              </div>
+            </div>
+            <div class="col-12 col-md-4">
+              <div class="metric-card">
+                <div class="metric-number">14 min</div>
+                <div class="metric-label">Avg. Service Time</div>
+              </div>
+            </div>
+          </div>
+          <div class="ui-panel-card p-3">
+            <h6 class="fw-bold mb-2">Live Store Status</h6>
+            <p class="text-muted mb-0">Restaurant operations are running smoothly. System sync active.</p>
+          </div>
+        </div>
+
+        <!-- PAGE: TABLES -->
+        <div class="view-page" id="page-tables">
+          <div class="row g-2">
+            <div class="col-6 col-md-3">
+              <div class="ui-panel-card text-center p-3">
+                <div class="fw-bold fs-6 mb-1">Table 01</div>
+                <span class="badge-custom badge-occupied mb-2 d-inline-block">Occupied</span>
+                <div class="text-muted small">Order #20251011</div>
+              </div>
+            </div>
+            <div class="col-6 col-md-3">
+              <div class="ui-panel-card text-center p-3">
+                <div class="fw-bold fs-6 mb-1">Table 02</div>
+                <span class="badge-custom badge-available mb-2 d-inline-block">Available</span>
+                <div class="text-muted small">Ready for seating</div>
+              </div>
+            </div>
+          </div>
+        </div>
+
+        <!-- PAGE: KITCHEN -->
+        <div class="view-page" id="page-kitchen">
+          <div class="row g-2">
+            <div class="col-12 col-md-6">
+              <div class="ui-panel-card border-warning p-3">
+                <div class="d-flex justify-content-between align-items-start mb-2">
+                  <span class="fw-bold">Table 1</span>
+                  <span class="badge bg-warning text-dark">Prep Queue</span>
+                </div>
+                <ul class="list-unstyled small mb-3">
+                  <li>2x Kung Pao Chicken</li>
+                  <li>1x Steamed Dumplings</li>
+                </ul>
+                <button class="btn btn-sm btn-orange w-100">Mark as Ready</button>
+              </div>
+            </div>
+          </div>
+        </div>
+
+        <!-- PAGE: MENUS -->
+        <div class="view-page" id="page-menus">
+          <div class="ui-panel-card p-3">
+            <div class="d-flex justify-content-between align-items-center mb-3">
+              <h6 class="fw-bold mb-0">Menu Items</h6>
+              <button class="btn btn-sm btn-orange"><i class="bi bi-plus me-1"></i>Add Dish</button>
+            </div>
+            <div class="table-responsive">
+              <table class="table table-sm align-middle">
+                <thead>
+                  <tr class="text-muted" style="font-size: 0.72rem;">
+                    <th>ITEM</th>
+                    <th>CATEGORY</th>
+                    <th>PRICE</th>
+                    <th>STATUS</th>
+                  </tr>
+                </thead>
+                <tbody style="font-size: 0.78rem;">
+                  <tr>
+                    <td class="fw-semibold">Kung Pao Chicken</td>
+                    <td>Main Course</td>
+                    <td>$31.00</td>
+                    <td><span class="badge-custom badge-available">In Stock</span></td>
+                  </tr>
+                </tbody>
+              </table>
+            </div>
+          </div>
+        </div>
+
+        <!-- PAGE: ANALYTICS -->
+        <div class="view-page" id="page-analytics">
+          <div class="ui-panel-card p-3">
+            <h6 class="fw-bold mb-2">Weekly Performance</h6>
+            <p class="text-muted small">Order volume grew by <strong>18.4%</strong> this week.</p>
+          </div>
+        </div>
+
+        <!-- PAGE: HELP -->
+        <div class="view-page" id="page-help">
+          <div class="ui-panel-card p-3">
+            <h6 class="fw-bold mb-2">Support & Help Desk</h6>
+            <p class="text-muted small mb-2">Need assistance with the POS or Kitchen terminal?</p>
+            <div class="small"><strong>Email:</strong> support@hrms-pos.io</div>
+          </div>
+        </div>
+
+        <!-- PAGE: SETTINGS -->
+        <div class="view-page" id="page-settings">
+          <div class="ui-panel-card p-3">
+            <h6 class="fw-bold mb-3">Store Configuration</h6>
+            <div class="mb-2">
+              <label class="form-label small mb-1">Store Name</label>
+              <input type="text" class="form-control form-control-sm" value="Chengxi Store">
+            </div>
+            <button class="btn btn-sm btn-orange mt-2">Save Settings</button>
+          </div>
+        </div>
+
+      </div>
+    </main>
+  </div>
+
+  <!-- Mobile Bottom Navigation Bar -->
+  <nav class="mobile-bottom-nav">
+    <button class="mobile-nav-btn" data-target="page-dashboard">
+      <i class="bi bi-grid"></i>
+      <span>Dashboard</span>
+    </button>
+    <button class="mobile-nav-btn active" data-target="page-orders">
+      <i class="bi bi-receipt"></i>
+      <span>Orders</span>
+    </button>
+    <button class="mobile-nav-btn" data-target="page-form-request">
+      <i class="bi bi-file-earmark-text"></i>
+      <span>Form</span>
+    </button>
+    <button class="mobile-nav-btn" data-target="page-kitchen">
+      <i class="bi bi-egg-fried"></i>
+      <span>Kitchen</span>
+    </button>
+    <button class="mobile-nav-btn" data-bs-toggle="offcanvas" data-bs-target="#mobileSidebarDrawer">
+      <i class="bi bi-three-dots"></i>
+      <span>More</span>
+    </button>
+  </nav>
+
+</div>
+
+<!-- Mobile Offcanvas Drawer -->
+<div class="offcanvas offcanvas-start" tabindex="-1" id="mobileSidebarDrawer" style="width: 280px;">
+  <div class="offcanvas-header border-bottom py-2">
+    <div class="d-flex align-items-center gap-2">
+      <img src="HRMS.png" alt="HRMS Logo" class="brand-logo-img" />
+      <span class="fs-6 fw-bold text-dark">HRMS Menu</span>
+    </div>
+    <button type="button" class="btn-close text-reset" data-bs-dismiss="offcanvas" aria-label="Close"></button>
+  </div>
+  <div class="offcanvas-body d-flex flex-column justify-content-between p-3">
+    <div>
+      <div class="nav-section-title">Menu</div>
+      <nav class="nav flex-column mb-3">
+        <a class="nav-pill-custom" data-target="page-dashboard" data-bs-dismiss="offcanvas"><i class="bi bi-grid"></i> Dashboard</a>
+        <a class="nav-pill-custom active" data-target="page-orders" data-bs-dismiss="offcanvas"><i class="bi bi-receipt"></i> Orders</a>
+        <a class="nav-pill-custom" data-target="page-form-request" data-bs-dismiss="offcanvas"><i class="bi bi-file-earmark-text"></i> Form Request</a>
+        <a class="nav-pill-custom" data-target="page-tables" data-bs-dismiss="offcanvas"><i class="bi bi-cup-straw"></i> Tables</a>
+        <a class="nav-pill-custom" data-target="page-kitchen" data-bs-dismiss="offcanvas"><i class="bi bi-egg-fried"></i> Kitchen</a>
+        <a class="nav-pill-custom" data-target="page-menus" data-bs-dismiss="offcanvas"><i class="bi bi-journal-text"></i> Menus</a>
+        <a class="nav-pill-custom" data-target="page-analytics" data-bs-dismiss="offcanvas"><i class="bi bi-graph-up"></i> Analytics</a>
+      </nav>
+
+      <div class="nav-section-title">Others</div>
+      <nav class="nav flex-column">
+        <a class="nav-pill-custom" data-target="page-help" data-bs-dismiss="offcanvas"><i class="bi bi-question-circle"></i> Help</a>
+        <a class="nav-pill-custom" data-target="page-settings" data-bs-dismiss="offcanvas"><i class="bi bi-gear"></i> Settings</a>
+      </nav>
+    </div>
+
+    <div class="pt-3 border-top d-flex align-items-center justify-content-between">
+      <div class="d-flex align-items-center gap-2">
+        <img src="https://images.unsplash.com/photo-1534528741775-53994a69daeb?w=100&auto=format&fit=crop&q=80" class="rounded-circle" width="32" height="32" alt="Avatar">
+        <div>
+          <div class="fw-bold" style="font-size: 0.8rem;">John Holland</div>
+          <div class="text-muted" style="font-size: 0.7rem;">Admin</div>
+        </div>
+      </div>
+      <button class="btn btn-sm btn-outline-danger" id="mobileLogoutBtn"><i class="bi bi-box-arrow-right"></i></button>
+    </div>
+  </div>
+</div>
+
+<!-- Profile Modal -->
+<div class="modal fade" id="profileModal" tabindex="-1">
+  <div class="modal-dialog modal-dialog-centered modal-sm">
+    <div class="modal-content border-0 shadow">
+      <div class="modal-header py-2">
+        <h6 class="modal-title fw-bold">Admin Profile</h6>
+        <button type="button" class="btn-close" data-bs-dismiss="modal"></button>
+      </div>
+      <div class="modal-body text-center p-3">
+        <img src="https://images.unsplash.com/photo-1534528741775-53994a69daeb?w=100&auto=format&fit=crop&q=80" class="rounded-circle mb-2" width="50" height="50">
+        <div class="fw-bold">John Holland</div>
+        <div class="text-muted small mb-3">admin@hrms.com</div>
+        <button class="btn btn-sm btn-outline-secondary w-100" data-bs-dismiss="modal">Close</button>
+      </div>
+    </div>
+  </div>
+</div>
+
+<!-- Scripts -->
+<script src="https://code.jquery.com/jquery-3.7.1.min.js"></script>
+<script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/js/bootstrap.bundle.min.js"></script>
+
+<script>
+  $(document).ready(function () {
+    
+    // 1. Password Visibility Toggle
+    $('#togglePasswordBtn').on('click', function() {
+      const passwordInput = $('#loginPassword');
+      const icon = $('#togglePasswordIcon');
+      if (passwordInput.attr('type') === 'password') {
+        passwordInput.attr('type', 'text');
+        icon.removeClass('bi-eye').addClass('bi-eye-slash');
+      } else {
+        passwordInput.attr('type', 'password');
+        icon.removeClass('bi-eye-slash').addClass('bi-eye');
+      }
+    });
+
+    // 2. Quick Demo Fill Click
+    $('#quickFillDemoBtn').on('click', function() {
+      $('#loginEmail').val('admin@hrms.com');
+      $('#loginPassword').val('password');
+    });
+
+    // 3. Login Action
+    $('#loginForm').on('submit', function(e) {
+      e.preventDefault();
+      $('#authView').fadeOut(200, function() {
+        $('#appView').fadeIn(200);
+      });
+    });
+
+    // 4. Logout Actions
+    $('#logoutBtn, #mobileLogoutBtn').on('click', function(e) {
+      e.preventDefault();
+      const offcanvasInstance = bootstrap.Offcanvas.getInstance(document.getElementById('mobileSidebarDrawer'));
+      if (offcanvasInstance) offcanvasInstance.hide();
+
+      $('#appView').fadeOut(200, function() {
+        $('#authView').fadeIn(200);
+      });
+    });
+
+    // 5. Dynamic Page Navigation
+    const pageMeta = {
+      'page-dashboard': { title: 'Dashboard', desc: 'Real-time overview of your store.' },
+      'page-orders': { title: 'Orders', desc: 'Manage all orders of the restaurant.' },
+      'page-form-request': { title: 'Form Request', desc: 'Manage food item forms, translations, and publishing.' },
+      'page-tables': { title: 'Tables', desc: 'Floor plan and table reservation status.' },
+      'page-kitchen': { title: 'Kitchen Display', desc: 'Live prep orders for kitchen staff.' },
+      'page-menus': { title: 'Menus', desc: 'Manage food items, pricing, and stock.' },
+      'page-analytics': { title: 'Analytics', desc: 'Sales, revenue and order insights.' },
+      'page-help': { title: 'Help & Support', desc: 'Get assistance and read documentation.' },
+      'page-settings': { title: 'Settings', desc: 'Configure store parameters and preferences.' }
+    };
+
+    function navigateToPage(targetPageId) {
+      $('.nav-pill-custom').removeClass('active');
+      $(`.nav-pill-custom[data-target="${targetPageId}"]`).addClass('active');
+
+      $('.mobile-nav-btn').removeClass('active');
+      $(`.mobile-nav-btn[data-target="${targetPageId}"]`).addClass('active');
+
+      $('.view-page').removeClass('active-view').hide();
+      $(`#${targetPageId}`).addClass('active-view').fadeIn(150);
+
+      if (pageMeta[targetPageId]) {
+        $('#headerTitle').text(pageMeta[targetPageId].title);
+        $('#headerSubtitle').text(pageMeta[targetPageId].desc);
+      }
+    }
+
+    $('.nav-pill-custom, .mobile-nav-btn[data-target]').on('click', function () {
+      const targetPage = $(this).data('target');
+      if (targetPage) navigateToPage(targetPage);
+    });
+
+    $('#headerGearBtn').on('click', function() {
+      navigateToPage('page-settings');
+    });
+
+    // 6. Form Request Subtabs
+    $('.form-req-tab-btn').on('click', function() {
+      $('.form-req-tab-btn').removeClass('active');
+      $(this).addClass('active');
+
+      const targetSubtab = $(this).data('subtab');
+      $('.form-subtab-view').hide();
+      $(`#subtab-${targetSubtab}`).fadeIn(150);
+    });
+
+    // 7. Tree items selection
+    $('.tree-item').on('click', function() {
+      $('.tree-item').removeClass('active');
+      $(this).addClass('active');
+    });
+
+    // 8. Orders Filter logic
+    $('.filter-btn').on('click', function () {
+      $('.filter-btn').removeClass('active');
+      $(this).addClass('active');
+
+      const filterValue = $(this).data('filter');
+      $('.order-item').each(function () {
+        const itemStatus = $(this).data('status');
+        if (filterValue === 'all' || itemStatus === filterValue) {
+          $(this).fadeIn(150);
+        } else {
+          $(this).fadeOut(150);
+        }
+      });
+    });
+
+    // 9. Search
+    $('#orderSearch').on('keyup', function () {
+      const searchTerm = $(this).val().toLowerCase();
+      $('.order-item').each(function () {
+        const cardText = $(this).text().toLowerCase();
+        $(this).toggle(cardText.indexOf(searchTerm) > -1);
+      });
+    });
+
+    // 10. Shortcut key Cmd/Ctrl + K
+    $(document).on('keydown', function (e) {
+      if ((e.metaKey || e.ctrlKey) && e.key.toLowerCase() === 'k') {
+        e.preventDefault();
+        $('#orderSearch').focus();
+      }
+    });
+
+    // 11. Pagination toggle
+    $('.custom-pagination .page-btn').on('click', function () {
+      if (!$(this).children('i').length && $(this).text() !== '...') {
+        $('.custom-pagination .page-btn').removeClass('active');
+        $(this).addClass('active');
+      }
+    });
+
+  });
+</script>
+
+</body>
+</html>
